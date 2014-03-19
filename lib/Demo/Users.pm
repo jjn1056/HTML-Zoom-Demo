@@ -12,13 +12,12 @@ sub call {
   my ($self, $env) = @_;
   my @users = @{$self->users};
   my $zoom = HTML::Zoom
-    ->from_file("".$self->template_path)  ## Note, Zoom should allow read fro nonblocking IO
+    ->from_file($self->template_path)  ## Note, Zoom should allow read fro nonblocking IO
     ->replace_content(title => $self->title)
     ->select('ul')->repeat_content(sub {
       HTML::Zoom::CodeStream->new({
           code => sub {
             while( my $user = shift @users) {
-              sleep 3;
               return sub { $_->replace_content(li => $user) };
             }
           return;
